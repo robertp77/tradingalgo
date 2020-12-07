@@ -72,6 +72,8 @@ bndbollys=pd.read_csv('5ybnd.csv')
 dbcbollys=pd.read_csv('5ydbc.csv')
 uupbollys=pd.read_csv('5yuup.csv')
 
+
+
 bndopen=bndbollys.pop('Open')
 bndclose=bndbollys.pop('Close')
 diaopen=diabollys.pop('Open')
@@ -81,6 +83,57 @@ dbcclose=dbcbollys.pop('Close')
 uupopen=uupbollys.pop('Open')
 uupclose=uupbollys.pop('Close')
 
+
+diaopen.loc[-1]=299.38
+diaopen.index=diaopen.index+1
+diaopen = diaopen.sort_index() 
+diaclose.loc[-1]=300.6
+diaclose.index=diaclose.index+1
+diaclose = diaclose.sort_index() 
+diaopen.loc[-1]=300.74
+diaopen.index=diaopen.index+1
+diaopen = diaopen.sort_index() 
+diaclose.loc[-1]=302.59
+diaclose.index=diaclose.index+1
+diaclose = diaclose.sort_index() 
+bndopen.loc[-1]=88.13
+bndopen.index=bndopen.index+1
+bndopen = bndopen.sort_index() 
+bndclose.loc[-1]=88.1
+bndclose.index=bndclose.index+1
+bndclose = bndclose.sort_index() 
+bndopen.loc[-1]=88
+bndopen.index=bndopen.index+1
+bndopen = bndopen.sort_index() 
+bndclose.loc[-1]=87.87
+bndclose.index=bndclose.index+1
+bndclose = bndclose.sort_index() 
+dbcopen.loc[-1]=13.93
+dbcopen.index=dbcopen.index+1
+dbcopen = dbcopen.sort_index() 
+dbcclose.loc[-1]=13.98
+dbcclose.index=dbcclose.index+1
+dbcclose = dbcclose.sort_index() 
+dbcopen.loc[-1]=14.01
+dbcopen.index=dbcopen.index+1
+dbcopen = dbcopen.sort_index() 
+dbcclose.loc[-1]=14.04
+dbcclose.index=dbcclose.index+1
+dbcclose = dbcclose.sort_index() 
+uupopen.loc[-1]=24.44
+uupopen.index=uupopen.index+1
+uupopen = uupopen.sort_index() 
+uupclose.loc[-1]=24.44
+uupclose.index=uupclose.index+1
+uupclose = uupclose.sort_index() 
+uupopen.loc[-1]=24.41
+uupopen.index=uupopen.index+1
+uupopen = uupopen.sort_index() 
+uupclose.loc[-1]=24.47
+uupclose.index=uupclose.index+1
+uupclose = uupclose.sort_index() 
+
+
 bndupper=bndbollys.pop('UBB(2)')
 bndlower=bndbollys.pop('LBB(2)')
 diaupper=diabollys.pop('UBB(2)')
@@ -89,50 +142,103 @@ dbcupper=dbcbollys.pop('UBB(2)')
 dbclower=dbcbollys.pop('LBB(2)')
 uupupper=uupbollys.pop('UBB(2)')
 uuplower=uupbollys.pop('LBB(2)')
-y=np.zeros((124*10,))
-for x in range(0,124):
-    y[x]=np.sign(diaclose[7*x]-diaopen[7*x])
+
+
+diaupper.loc[-1]=304.65
+diaupper.index=diaupper.index+1
+diaupper = diaupper.sort_index() 
+dialower.loc[-1]=285.67
+dialower.index=dialower.index+1
+dialower = dialower.sort_index() 
+diaupper.loc[-1]=304.6
+diaupper.index=diaupper.index+1
+diaupper = diaupper.sort_index() 
+dialower.loc[-1]=287.6
+dialower.index=dialower.index+1
+dialower = dialower.sort_index() 
+bndupper.loc[-1]=88.61
+bndupper.index=bndupper.index+1
+bndupper = bndupper.sort_index() 
+bndlower.loc[-1]=87.46
+bndlower.index=bndlower.index+1
+bndlower = bndlower.sort_index() 
+bndupper.loc[-1]=88.59
+bndupper.index=bndupper.index+1
+bndupper = bndupper.sort_index() 
+bndlower.loc[-1]=87.45
+bndlower.index=bndlower.index+1
+bndlower = bndlower.sort_index() 
+dbcupper.loc[-1]=14.19
+dbcupper.index=dbcupper.index+1
+dbcupper = dbcupper.sort_index() 
+dbclower.loc[-1]=13.05
+dbclower.index=dbclower.index+1
+dbclower = dbclower.sort_index() 
+dbcupper.loc[-1]=14.22
+dbcupper.index=dbcupper.index+1
+dbcupper = dbcupper.sort_index() 
+dbclower.loc[-1]=13.1
+dbclower.index=dbclower.index+1
+dbclower = dbclower.sort_index() 
+uupupper.loc[-1]=25.225
+uupupper.index=uupupper.index+1
+uupupper = uupupper.sort_index() 
+uuplower.loc[-1]=24.54
+uuplower.index=uuplower.index+1
+uuplower = uuplower.sort_index() 
+uupupper.loc[-1]=25.24
+uupupper.index=uupupper.index+1
+uupupper = uupupper.sort_index() 
+uuplower.loc[-1]=24.47
+uuplower.index=uuplower.index+1
+uuplower = uuplower.sort_index() 
+
+
+
+y=np.zeros((125*10,))
+for x in range(0,125):
+    y[x]=np.sign(diaclose[10*x]-diaopen[10*x])
     if y[x]==0:
         y[x]=1
-for x in range(0,124):
-    y[x+124]=np.sign(diaclose[7*x+1]-diaopen[7*x+1])
-    if y[x+124]==0:
-        y[x+124]=1
-for x in range(0,124):
-    y[x+124*2]=np.sign(diaclose[7*x+2]-diaopen[7*x+2])
-    if y[x+124*2]==0:
-        y[x+124*2]=1
-for x in range(0,124):
-    y[x+124*3]=np.sign(diaclose[7*x+3]-diaopen[7*x+3])
-    if y[x+124*3]==0:
-        y[x+124*3]=1
-for x in range(0,124):
-    y[x+124*4]=np.sign(diaclose[7*x+4]-diaopen[7*x+4])
-    if y[x+124*4]==0:
-        y[x+124*4]=1
-for x in range(0,124):
-    y[x+124*5]=np.sign(diaclose[7*x+5]-diaopen[7*x+5])
-    if y[x+124*5]==0:
-        y[x+124*5]=1
-for x in range(0,124):
-    y[x+124*6]=np.sign(diaclose[7*x+6]-diaopen[7*x+6])
-    if y[x+124*6]==0:
-        y[x+124*6]=1
-for x in range(0,124):
-    y[x+124*7]=np.sign(diaclose[7*x+7]-diaopen[7*x+7])
-    if y[x+124*7]==0:
-        y[x+124*7]=1
-for x in range(0,124):
-    y[x+124*8]=np.sign(diaclose[7*x+8]-diaopen[7*x+8])
-    if y[x+124*8]==0:
-        y[x+124*8]=1
-for x in range(0,124):
-    y[x+124*9]=np.sign(diaclose[7*x+9]-diaopen[7*x+9])
-    if y[x+124*9]==0:
-        y[x+124*9]=1
-X=np.zeros((124*10,16))
+for x in range(0,125):
+    y[x+125]=np.sign(diaclose[10*x+1]-diaopen[10*x+1])
+    if y[x+125]==0:
+        y[x+125]=1
+for x in range(0,125):
+    y[x+125*2]=np.sign(diaclose[10*x+2]-diaopen[10*x+2])
+    if y[x+125*2]==0:
+        y[x+125*2]=1
+for x in range(0,125):
+    y[x+125*3]=np.sign(diaclose[10*x+3]-diaopen[10*x+3])
+    if y[x+125*3]==0:
+        y[x+125*3]=1
+for x in range(0,125):
+    y[x+125*4]=np.sign(diaclose[10*x+4]-diaopen[10*x+4])
+    if y[x+125*4]==0:
+        y[x+125*4]=1
+for x in range(0,125):
+    y[x+125*5]=np.sign(diaclose[10*x+5]-diaopen[10*x+5])
+    if y[x+125*5]==0:
+        y[x+125*5]=1
+for x in range(0,125):
+    y[x+125*6]=np.sign(diaclose[10*x+6]-diaopen[10*x+6])
+    if y[x+125*6]==0:
+        y[x+125*6]=1
+for x in range(0,125):
+    y[x+125*7]=np.sign(diaclose[10*x+7]-diaopen[10*x+7])
+    if y[x+125*7]==0:
+        y[x+125*7]=1
+for x in range(0,125):
+    y[x+125*8]=np.sign(diaclose[10*x+8]-diaopen[10*x+8])
+    if y[x+125*8]==0:
+        y[x+125*8]=1
+for x in range(0,125):
+    y[x+125*9]=np.sign(diaclose[10*x+9]-diaopen[10*x+9])
+    if y[x+125*9]==0:
+        y[x+125*9]=1
+X=np.zeros((125*10,16))
 n=1
-for x in range(0,124):
+for x in range(0,125):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -208,7 +314,7 @@ for x in range(0,124):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=2
-for x in range(124,124*2):
+for x in range(125,125*2):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -284,7 +390,7 @@ for x in range(124,124*2):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=3
-for x in range(124*2,124*3):
+for x in range(125*2,125*3):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -360,7 +466,7 @@ for x in range(124*2,124*3):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=4
-for x in range(124*3,124*4):
+for x in range(125*3,125*4):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -436,7 +542,7 @@ for x in range(124*3,124*4):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=5
-for x in range(124*4,124*5):
+for x in range(125*4,125*5):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -512,7 +618,7 @@ for x in range(124*4,124*5):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=6
-for x in range(124*5,124*6):
+for x in range(125*5,125*6):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -588,7 +694,7 @@ for x in range(124*5,124*6):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=7
-for x in range(124*6,124*7):
+for x in range(125*6,125*7):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -664,7 +770,7 @@ for x in range(124*6,124*7):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=8
-for x in range(124*7,124*8):
+for x in range(125*7,125*8):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -740,7 +846,7 @@ for x in range(124*7,124*8):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=9
-for x in range(124*8,124*9):
+for x in range(125*8,125*9):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -816,7 +922,7 @@ for x in range(124*8,124*9):
     X[x,15]=np.mean(np.array(uups))
     n+=10
 n=10
-for x in range(124*9,124*10):
+for x in range(125*9,125*10):
     X[x,0]=(diaopen[n-1]-dialower[n])/(diaupper[n]-dialower[n])
     X[x,1]=(((diaopen[n]+diaclose[n])/2)-dialower[n])/(diaupper[n]-dialower[n])
     X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
@@ -910,7 +1016,8 @@ parameters = {'SVM__kernel':[ 'sigmoid'],
               #'PCA__n_components':[0.5]}
 results=[]
 money=0
-for x in range(1,250):
+
+for x in range(1,251):
     # Create train and test sets
     #X_train, X_test, y_train, y_testt = train_test_split(X,y,test_size=0.0005, random_state=x)
     
@@ -929,30 +1036,13 @@ for x in range(1,250):
     #print(cv.predict(np.reshape(np.array([1.625,1.625,-0.70,1.2,0.06,-0.07,-0.5,-0.6,-0.04,-0.14,0.28,0.05,-0.09,-0.16,-0.1,-0.05,0,-0.02,-0.05,-0.1,-0.07,-0.02]),(1,-1))))
     # Compute and print metrics
     if cv.score(X_test, y_test)!=0:
-        '''
-        if y_pred==1:
-            money+=(diaclose[x]-diaopen[x])
-        else:
-            money+=(diaopen[x]-diaclose[x])
-        '''
         if y_pred==-1:
-            money+=(diaopen[x]-diaclose[x])
-        
+            money+=(diaopen[x]-diaclose[x])   
     else:
-        '''
-        if y_test==1:
-            money+=(diaopen[x]-diaclose[x])
-        else:
-            money+=(diaclose[x]-diaopen[x])
-        '''
         if y_pred==-1:
-            money+=(diaopen[x]-diaclose[x])
-        
+            money+=(diaopen[x]-diaclose[x])        
     results.append(cv.score(X_test, y_test))
     print(money)
 nres=np.array(results)
 print(np.mean(nres))
 
-#print("Accuracy: {}".format(cv.score(X_test, y_test)))
-#print(classification_report(y_test, y_pred))
-#print("Tuned Model Parameters: {}".format(cv.best_params_))

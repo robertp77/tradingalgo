@@ -1016,8 +1016,10 @@ parameters = {'SVM__kernel':[ 'sigmoid'],
               #'PCA__n_components':[0.5]}
 results=[]
 money=0
-
-for x in range(1,251):
+justbought=False
+justsold=True
+sell=0
+for x in range(250,-1,-1):
     # Create train and test sets
     #X_train, X_test, y_train, y_testt = train_test_split(X,y,test_size=0.0005, random_state=x)
     
@@ -1035,12 +1037,26 @@ for x in range(1,251):
     y_pred = cv.predict(X_test)
     #print(cv.predict(np.reshape(np.array([1.625,1.625,-0.70,1.2,0.06,-0.07,-0.5,-0.6,-0.04,-0.14,0.28,0.05,-0.09,-0.16,-0.1,-0.05,0,-0.02,-0.05,-0.1,-0.07,-0.02]),(1,-1))))
     # Compute and print metrics
+    if y_pred==1:
+        if justbought==False:
+            buy=diaopen[x]
+        justbought=True
+        justsold=False
+    else:
+        if justsold==False:
+            sell=diaopen[x]
+        justsold=True
+        justbought=False
+    if justsold==True and sell!=0:
+        money+=(sell-buy)
+    '''
     if cv.score(X_test, y_test)!=0:
         if y_pred==-1:
             money+=(diaopen[x]-diaclose[x])   
     else:
         if y_pred==-1:
-            money+=(diaopen[x]-diaclose[x])        
+            money+=(diaopen[x]-diaclose[x])  
+    '''
     results.append(cv.score(X_test, y_test))
     print(money)
 nres=np.array(results)

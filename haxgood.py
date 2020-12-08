@@ -20,6 +20,7 @@ from sklearn.decomposition import PCA
 import time
 from sklearn.metrics import plot_confusion_matrix, roc_curve, roc_auc_score
 import tensorflow
+from sklearn.linear_model import LogisticRegression
 '''
 f = open('list_pickle3.pkl', 'rb') #<-- USE THIS FOR 92%
 
@@ -997,7 +998,9 @@ for x in range(125*9,125*10):
     uups.append((uupclose[n+8]-uuplower[n])/(uupupper[n]-uuplower[n]))
     X[x,15]=np.mean(np.array(uups))
     n+=10
+
 pca=PCA()
+
 steps = [('scaler', StandardScaler()),
          #('PCA',  pca),
          ('SVM', SVC(random_state=21, probability=True))]
@@ -1007,19 +1010,34 @@ pipeline = Pipeline(steps)
 c_space = np.logspace(0, 2, 15) #From Datacamp Scikit Learn Hyperparameter Tuning with GridSearchCV
 
 parameters = {'SVM__kernel':[ 'sigmoid'],
+              #'SVM__degree':[3],
               #'SVM__gamma': ['scale', 'auto'],
               #'SVM__gamma': np.logspace(-3, -1, 10),
               'SVM__gamma': [0.024],
-              'SVM__C':[10],
+              'SVM__C':[8],
               'SVM__decision_function_shape': ['ovo']}
               #'PCA__n_components':np.linspace(0.6, 0.9,10)}
               #'PCA__n_components':[0.5]}
+'''
+steps = [('scaler', StandardScaler()),
+         ('PCA',  pca),
+         ('LR', LogisticRegression(random_state=21))]
+pipeline = Pipeline(steps)
+#'linear', 'rbf', 'poly', 'sigmoid'
+# Specify the hyperparameter space
+c_space = np.logspace(0, 2, 15) #From Datacamp Scikit Learn Hyperparameter Tuning with GridSearchCV
+
+parameters = {'LR__solver': ['saga'],
+                'LR__penalty':['l2'],
+                'LR__C':[1],
+              'PCA__n_components':[0.95]}
+'''
 results=[]
 money=0
 justbought=False
 justsold=True
 sell=0
-for x in range(250,-1,-1):
+for x in range(250,0,-1):
     # Create train and test sets
     #X_train, X_test, y_train, y_testt = train_test_split(X,y,test_size=0.0005, random_state=x)
     
@@ -1040,13 +1058,15 @@ for x in range(250,-1,-1):
     if y_pred==1:
         if justbought==False:
             buy=diaopen[x]
-        justbought=True
-        justsold=False
+            justbought=True
+            justsold=False
     else:
         if justsold==False:
             sell=diaopen[x]
-        justsold=True
-        justbought=False
+            justsold=True
+            justbought=False
+        elif justsold==True and sell!=0:
+            justsold=False
     if justsold==True and sell!=0:
         money+=(sell-buy)
     '''
@@ -1059,6 +1079,7 @@ for x in range(250,-1,-1):
     '''
     results.append(cv.score(X_test, y_test))
     print(money)
+print(money+diaopen[0]-buy)
 nres=np.array(results)
 print(np.mean(nres))
 

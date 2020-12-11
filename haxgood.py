@@ -205,62 +205,7 @@ for xx in range(0,10):
             y[x+xx*dt]=1
         elif y[x+xx*dt]==-1:
             y[x+xx*dt]=0
-'''
-for x in range(0,dt):
-    y[x+dt]=np.sign(diaclose[10*x+1]-diaopen[10*x+1])
-    if y[x+dt]==0:
-        y[x+dt]=1
-    elif y[x+dt]==-1:
-        y[x+dt]=0
-for x in range(0,dt):
-    y[x+dt*2]=np.sign(diaclose[10*x+2]-diaopen[10*x+2])
-    if y[x+dt*2]==0:
-        y[x+dt*2]=1
-    elif y[x+dt*2]==-1:
-        y[x+dt*2]=0
-for x in range(0,dt):
-    y[x+125*3]=np.sign(diaclose[10*x+3]-diaopen[10*x+3])
-    if y[x+125*3]==0:
-        y[x+125*3]=1
-    elif y[x+125*3]==-1:
-        y[x+125*3]=0
-for x in range(0,125):
-    y[x+125*4]=np.sign(diaclose[10*x+4]-diaopen[10*x+4])
-    if y[x+125*4]==0:
-        y[x+125*4]=1
-    elif y[x+125*4]==-1:
-        y[x+125*4]=0
-for x in range(0,125):
-    y[x+125*5]=np.sign(diaclose[10*x+5]-diaopen[10*x+5])
-    if y[x+125*5]==0:
-        y[x+125*5]=1
-    elif y[x+125*5]==-1:
-        y[x+125*5]=0
-for x in range(0,125):
-    y[x+125*6]=np.sign(diaclose[10*x+6]-diaopen[10*x+6])
-    if y[x+125*6]==0:
-        y[x+125*6]=1
-    elif y[x+125*6]==-1:
-        y[x+125*6]=0
-for x in range(0,125):
-    y[x+125*7]=np.sign(diaclose[10*x+7]-diaopen[10*x+7])
-    if y[x+125*7]==0:
-        y[x+125*7]=1
-    elif y[x+125*7]==-1:
-        y[x+125*7]=0
-for x in range(0,125):
-    y[x+125*8]=np.sign(diaclose[10*x+8]-diaopen[10*x+8])
-    if y[x+125*8]==0:
-        y[x+125*8]=1
-    elif y[x+125*8]==-1:
-        y[x+125*8]=0
-for x in range(0,125):
-    y[x+125*9]=np.sign(diaclose[10*x+9]-diaopen[10*x+9])
-    if y[x+125*9]==0:
-        y[x+125*9]=1
-    elif y[x+125*9]==-1:
-        y[x+125*9]=0
-'''
+
 X=np.zeros((dt*10,16))
 n=1
 for xx in range(0,10):

@@ -289,23 +289,23 @@ for xx in range(0,10):
 pca=PCA()
 
 steps = [('scaler', StandardScaler()),
-         ('PCA',  pca),
+         #('PCA',  pca),
          ('SVM', SVC(random_state=21, probability=True))]
 pipeline = Pipeline(steps)
 #'linear', 'rbf', 'poly', 'sigmoid'
 # Specify the hyperparameter space
 c_space = np.logspace(-2, 2, 15) #From Datacamp Scikit Learn Hyperparameter Tuning with GridSearchCV
 
-parameters = {'SVM__kernel':[ 'poly'],
+parameters = {'SVM__kernel':[ 'sigmoid'],
                 #'SVM__kernel':[ 'poly'],
               #'SVM__degree':[3],
               #'SVM__gamma': ['scale', 'auto'],
-              'SVM__gamma': np.logspace(-3, 0, 10),
+              'SVM__gamma': [0.012],
               #'SVM__gamma': [0.024],
-              'SVM__C':c_space,
-              'SVM__decision_function_shape': ['ovo'],
+              'SVM__C':[13.9],
+              'SVM__decision_function_shape': ['ovo']}
               #'PCA__n_components':np.linspace(0.6, 0.9,10)}
-              'PCA__n_components':[0.75]}
+              #'PCA__n_components':[0.75]}
 '''
 steps = [('scaler', StandardScaler()),
          ('PCA',  pca),
@@ -338,28 +338,26 @@ model.compile(optimizer='adam',
           metrics=['accuracy'])
 model.fit(X_train, y_train, epochs=800) 
 '''
-#for x in range(500,250,-1):
+for x in range(250,0,-1):
 # Create train and test sets
 #X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.0005, random_state=x)
 
 # Instantiate the GridSearchCV object: cv
-cv = GridSearchCV(pipeline, parameters, cv=2,n_jobs=20)
-#cv = RandomizedSearchCV(pipeline, parameters, cv=5, n_jobs=20, random_state=20)
-#X_test=np.reshape(np.array(X[0:250,:]),(250,16))
-X_test=np.float32(np.array(X[0:250,:]))
-y_test=np.float32(np.array(y[0:250]))
-# Fit to the training set
-#cv.fit(X_train, y_train)
-X_train=np.float32(np.delete(X,slice(250),0))
-y_train=np.float32(np.delete(y,slice(250),0))
-cv.fit(X_train, y_train)
-# Predict the labels of the test set: y_pred
-#y_pred = cv.predict(X_test)
-print(cv.score(X_test,y_test))
-print("Tuned Model Parameters: {}".format(cv.best_params_))
-#print(cv.predict(np.reshape(np.array([1.625,1.625,-0.70,1.2,0.06,-0.07,-0.5,-0.6,-0.04,-0.14,0.28,0.05,-0.09,-0.16,-0.1,-0.05,0,-0.02,-0.05,-0.1,-0.07,-0.02]),(1,-1))))
-# Compute and print metrics
-'''
+    cv = GridSearchCV(pipeline, parameters, cv=2,n_jobs=20)
+    #cv = RandomizedSearchCV(pipeline, parameters, cv=5, n_jobs=20, random_state=20)
+    #X_test=np.reshape(np.array(X[0:250,:]),(250,16))
+    X_test=np.reshape(np.array(X[x,:]),(1,-1))
+    y_test=np.array(y[x])
+    # Fit to the training set
+    #cv.fit(X_train, y_train)
+    X_train=np.delete(X,slice(x+1),0)
+    y_train=np.delete(y,slice(x+1),0)
+    cv.fit(X_train, y_train)
+    # Predict the labels of the test set: y_pred
+    y_pred = cv.predict(X_test)
+    #print(cv.predict(np.reshape(np.array([1.625,1.625,-0.70,1.2,0.06,-0.07,-0.5,-0.6,-0.04,-0.14,0.28,0.05,-0.09,-0.16,-0.1,-0.05,0,-0.02,-0.05,-0.1,-0.07,-0.02]),(1,-1))))
+    # Compute and print metrics
+
     if y_pred==1:
         if justbought==False:
             buy=diaopen[x]
@@ -377,7 +375,7 @@ print("Tuned Model Parameters: {}".format(cv.best_params_))
             justsold=False
     if justsold==True and sell!=0:
         money+=(sell-buy)
-
+    '''
     if np.argmax(y_pred)==0:
         money+=(diaopen[x]-diaclose[x])  
     if np.argmax(y_pred)==1 and y_test==1:
@@ -388,7 +386,7 @@ print("Tuned Model Parameters: {}".format(cv.best_params_))
         results.append(1)
     else:
         results.append(0)
-
+    '''
     if y_pred==1 and y_test==1:
         results.append(1)
     elif y_pred==0 and y_test==1:
@@ -397,12 +395,13 @@ print("Tuned Model Parameters: {}".format(cv.best_params_))
         results.append(1)
     else:
         results.append(0)
-
+    '''
     if y_pred==0:
         money+=(diaopen[x]-diaclose[x]) 
-
+    '''
     print(money)
-print(money+diaopen[250]-buy)
+
+print(money+diaopen[0]-buy)
 nres=np.array(results)
 print(np.mean(nres))
-'''
+

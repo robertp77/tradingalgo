@@ -22,6 +22,7 @@ from sklearn.metrics import plot_confusion_matrix, roc_curve, roc_auc_score
 import tensorflow
 from tensorflow import keras
 from sklearn.linear_model import LogisticRegression
+import matplotlib.pyplot as plt
 '''
 f = open('list_pickle3.pkl', 'rb') #<-- USE THIS FOR 92%
 
@@ -200,7 +201,10 @@ dt=124
 y=np.zeros((dt*10,))
 for xx in range(0,10):
     for x in range(0,dt):
-        y[x+xx*dt]=np.sign(diaclose[10*x]-diaopen[10*x])
+        if x==0 and xx==0:
+            y[x+xx*dt]=np.sign(diaclose[10*x+xx]-diaopen[10*x+xx])
+        else:
+            y[x+xx*dt]=np.sign(diaopen[10*x+xx-1]-diaopen[10*x+xx])
         if y[x+xx*dt]==0:
             y[x+xx*dt]=1
         elif y[x+xx*dt]==-1:
@@ -216,11 +220,21 @@ for xx in range(0,10):
         X[x,2]=(((diaopen[n+1]+diaclose[n+1])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,3]=(((diaopen[n+2]+diaclose[n+2])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,4]=(((diaopen[n+3]+diaclose[n+3])/2)-dialower[n])/(diaupper[n]-dialower[n])
+        
         X[x,5]=(((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,6]=(((diaopen[n+5]+diaclose[n+5])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,7]=(((diaopen[n+6]+diaclose[n+6])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,8]=(((diaopen[n+7]+diaclose[n+7])/2)-dialower[n])/(diaupper[n]-dialower[n])
         X[x,9]=(((diaopen[n+8]+diaclose[n+8])/2)-dialower[n])/(diaupper[n]-dialower[n])
+        '''
+        xs=[]
+        xs.append((((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n]))
+        xs.append((((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n]))
+        xs.append((((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n]))
+        xs.append((((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n]))
+        xs.append((((diaopen[n+4]+diaclose[n+4])/2)-dialower[n])/(diaupper[n]-dialower[n]))
+        X[x,5]=np.mean(np.array(xs))
+        '''
         bnds=[]
         bnds.append((bndopen[n]-bndlower[n])/(bndupper[n]-bndlower[n]))
         bnds.append((bndclose[n]-bndlower[n])/(bndupper[n]-bndlower[n]))
@@ -289,7 +303,7 @@ for xx in range(0,10):
 pca=PCA()
 
 steps = [('scaler', StandardScaler()),
-         #('PCA',  pca),
+         ('PCA',  pca),
          ('SVM', SVC(random_state=21, probability=True))]
 pipeline = Pipeline(steps)
 #'linear', 'rbf', 'poly', 'sigmoid'
@@ -300,12 +314,12 @@ parameters = {'SVM__kernel':[ 'sigmoid'],
                 #'SVM__kernel':[ 'poly'],
               #'SVM__degree':[3],
               #'SVM__gamma': ['scale', 'auto'],
-              'SVM__gamma': [0.012],
+              'SVM__gamma': [0.02],
               #'SVM__gamma': [0.024],
-              'SVM__C':[13.9],
-              'SVM__decision_function_shape': ['ovo']}
+              'SVM__C':[8],
+              'SVM__decision_function_shape': ['ovo'],
               #'PCA__n_components':np.linspace(0.6, 0.9,10)}
-              #'PCA__n_components':[0.75]}
+              'PCA__n_components':[0.25]}
 '''
 steps = [('scaler', StandardScaler()),
          ('PCA',  pca),
@@ -326,6 +340,9 @@ justbought=False
 justsold=True
 alreadysold=False
 sell=0
+monies=[]
+buys=[]
+sells=[]
 # Fit to the training set
 '''
 model = keras.Sequential([
@@ -350,8 +367,8 @@ for x in range(250,0,-1):
     y_test=np.array(y[x])
     # Fit to the training set
     #cv.fit(X_train, y_train)
-    X_train=np.delete(X,slice(x+1),0)
-    y_train=np.delete(y,slice(x+1),0)
+    X_train=np.delete(X, slice(x+1), axis = 0)
+    y_train=np.delete(y,slice(x+1),axis=0)
     cv.fit(X_train, y_train)
     # Predict the labels of the test set: y_pred
     y_pred = cv.predict(X_test)
@@ -364,15 +381,24 @@ for x in range(250,0,-1):
             justbought=True
             justsold=False
             alreadysold=False
+            buys.append(buy)
+        else:
+            buys.append(0)
+        sells.append(0)
     else:
         if justsold==False and alreadysold==False:
             sell=diaopen[x]
             justsold=True
             alreadysold=True
             justbought=False
+            sells.append(sell)
         elif justsold==True and sell!=0:
             alreadysold=True
             justsold=False
+            sells.append(0)
+        else:
+            sells.append(0)
+        buys.append(0)
     if justsold==True and sell!=0:
         money+=(sell-buy)
     '''
@@ -399,9 +425,13 @@ for x in range(250,0,-1):
     if y_pred==0:
         money+=(diaopen[x]-diaclose[x]) 
     '''
+    print(x)
     print(money)
-
+    monies.append(money)
 print(money+diaopen[0]-buy)
 nres=np.array(results)
 print(np.mean(nres))
-
+plt.plot(np.arange(0,250,1),np.array(diaopen[250:0:-1]))
+plt.plot(np.arange(0,250,1),monies)
+plt.plot(np.arange(0,250,1),buys,'g.')
+plt.plot(np.arange(0,250,1),sells,'r.')
